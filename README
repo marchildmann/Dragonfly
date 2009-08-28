@@ -1,6 +1,6 @@
 ;;
 ;; Dragonfly - a newLISP web framework
-;; Version 0.18
+;; Version 0.19
 ;;
 ;; This project is under heavy development. It will include a simple finance software written
 ;; in newLISP and obviously Dragonfly.
