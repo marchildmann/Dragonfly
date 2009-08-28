@@ -1,6 +1,7 @@
+#!/usr/bin/newlisp
 ;; @module Web
 ;; @author Jeff Ober <jeffober@gmail.com>
-;; @version 0.2 beta
+;; @version 0.3.1 beta
 ;; @location http://static.artfulcode.net/newlisp/web.lsp
 ;; @package http://static.artfulcode.net/newlisp/web.qwerty
 ;; @description A collection of functions for writing web-based software.
@@ -29,7 +30,17 @@
 ;; 
 ;; <b>Note:</b> for JSON encoding and decoding, see the @link http://static.artfulcode.net/newlisp/json.lsp.html Json module.
 ;; 
+;; <h4>To do</h4>
+;; &bull; add MIME decoding for multipart posts
+;;
 ;; <h4>Version history</h4>
+;; <b>0.3.1</b>
+;; &bull; fixed ineffective usage of set/setf
+;;
+;; <b>0.3</b>
+;; &bull; made parse-query more tolerant and fixed parsing bug
+;; &bull; cookie now accepts an additional parameter that only permits access during HTTPS sessions
+;; 
 ;; <b>0.2</b>
 ;; &bull; build-url now accepts query strings in addition to assoc lists
 ;; &bull; session-id now accepts an optional parameter to set the session id
@@ -38,7 +49,7 @@
 ;; 
 ;; <b>0.1</b>
 ;; &bull; initial release
-;;
+;; 
 (context 'Web)
 
 ;===============================================================================
@@ -232,7 +243,7 @@
 ;; @param <query-string> a URL-encoded query string
 ;; @return an association list of decoded key-value pairs
 ;; <p>Parses a URL-encoded query string and returns a list of key-values pairs.</p>
-(constant 'REGEX_QUERY (regex-comp {&([-_.$+!*'()0-9a-z]+?)=([-_.$+!*'()0-9a-z]+?)(?=&|$)} 1))
+(constant 'REGEX_QUERY (regex-comp {&([^&=]+?)=([^&=]+?)(?=&|$)} 1))
 
 (define (parse-query query)
   (when (starts-with query "?")
@@ -280,7 +291,7 @@
 (define (parse-url url)
   ;; clear indices of previous matches
   (dolist (idx '($0 $1 $2 $3 $4 $5 $6 $7 $8 $9))
-    (setf idx nil))
+    (set idx nil))
   (when (regex REGEX_URL url 0x10000)
     (let ((user-pass (parse $2 ":")))
       (list
@@ -370,35 +381,35 @@
 ;; @syntax (Web:cookie <str-key>)
 ;; @param <str-key> the cookie's name
 ;; 
-;; @syntax (Web:cookie <str-key> <str-value> [<int-expires> [<str-path> [<str-domain> [<bool-http-only>]]]])
+;; @syntax (Web:cookie <str-key> <str-value> [<int-expires> [<str-path> [<str-domain> [<bool-http-only> [<bool-secure-only>]]]])
 ;; @param <str-key> the cookie's name
 ;; @param <str-key> the cookie's value
 ;; @param <int-expires> (optional) the expiration date of the cookie as a unix timestamp; default is a session cookie
 ;; @param <str-path> (optional) the cookie's path; default is the current path
 ;; @param <str-domain> (optional) the cookie's domain; default is the current host
 ;; @param <bool-http-only> (optional) whether the cookie may be read by client-side scripts
+;; @param <bool-secure-only> (optional) whether the cookie may be accessed/set outside of HTTPS
 ;; <p>In the first syntax, 'cookie' returns the value of the cookie named <str-key> or 'nil'. If
 ;; <str-key> is not provided, an association list of all cookie values is returned.</p>
 ;; <p>In the second syntax, 'cookie' sets a new cookie or overwrites an existing cookie in the
 ;; client's browser. Note that <bool-http-only> defaults to true, but is not standard and
-;; therefore is not necessarily implemented in all browsers. Cookies use the 'header'
-;; function and must be sent before calling 'send-headers'.</p>
-(define (cookie)
-  (case (length (args))
-    (0 COOKIES)
-    (1 (when COOKIE (lookup (args 0) COOKIE)))
+;; therefore is not necessarily implemented in all browsers. <bool-secure-only> defaults to nil.
+;; Cookies use the 'header' function and must be sent before calling 'send-headers'.</p>
+(define (cookie key value expires path domain http-only secure)
+  (cond
+    ((null? key) COOKIES)
+    ((and (null? value) COOKIE)
+     (lookup key COOKIE))
     (true
-      (header "Set-Cookie"
-        (apply
-          (lambda (key value expires path domain http-only)
-            (format "%s=%s%s%s%s%s"
-              (url-encode (string key))
-              (url-encode (string value))
-              (if expires (string "; expires=" (date expires 0 "%a, %d-%b-%Y %H:%M:%S %Z")) "")
-              (if path (string "; path=" path) "")
-              (if domain (string "; domain=" domain) "")
-              (if-not http-only "; HttpOnly" "")))
-          (args))))))
+      (when (or (not secure) (and secure (starts-with (lower-case (env "SERVER_PROTOCOL")) "https")))
+        (header "Set-Cookie"
+          (format "%s=%s%s%s%s%s"
+            (url-encode (string key))
+            (url-encode (string value))
+            (if expires (string "; expires=" (date expires 0 "%a, %d-%b-%Y %H:%M:%S %Z")) "")
+            (if path (string "; path=" path) "")
+            (if domain (string "; domain=" domain) "")
+            (if-not http-only "; HttpOnly" "")))))))
 
 ;; @syntax (Web:get <str-key>)
 ;; <p>Returns the value of <str-key> in the query string or 'nil' if not present.
@@ -473,8 +484,8 @@
 ;; list of key/value pairs in an application.</p>
 (define (session-context , ctx)
   (setf ctx (sym (session-id) 'MAIN))
-  (if-not (context? ctx)
-    (new Tree ctx))
+  (unless (context? ctx)
+    (context ctx))
   ctx)
 
 ;; @syntax (Web:open-session)
@@ -632,6 +643,20 @@
 ; structures.
 ;===============================================================================
 
+; Content-Disposition: form-data; name="file"; filename="white-napkin.jpg"\r\nContent-Type: image/jpeg\r\n\r\n\253\152\191\160\128\144JFIF
+; Content-Disposition: form-data; name="text"\r\n\r\nadsf\r\n
+(define (mime-decode str , content-type parts re decoded)
+  (when (setf content-type (regex {^multipart/form-data; boundary=(.+?)$} (env "CONTENT_TYPE") 1))
+    (setf parts (find-all (string "--" (content-type 3) {\r\n(.+?)(?=--)}) str $1 (| 2 4)))
+    (dolist (part parts)
+      (cond
+        ((regex {Content-Disposition: form-data; name="(.+?)"\r\n\r\n(.*?)\s+} part 1)
+         (push (list $1 $2) decoded -1))
+        ((regex {Content-Disposition: form-data; name="(.+?)"; filename="(.+?)"\r\nContent-Type: (.+?)\r\n\r\n(.*)$} part (| 1 2 4))
+         (push (list $1 (list (list "filename" $2) (list "content-type" $3) (list "bytes" $4))) decoded -1))))
+    decoded))
+
+
 ; Install default session handlers
 (define-session-handlers
   default-open-session
@@ -647,9 +672,20 @@
 ; Read POST data
 (if-not (context? CGI)
   ;; CGI module not present; read and parse the POST data ourselves
-  (let ((post ""))
-    (read-buffer (device) post POST_LIMIT)
-    (setf POST (when post (parse-query post))))
+  (let ((post "") (buffer ""))
+   (unless (zero? (peek (device)))
+    (while (read-buffer (device) buffer POST_LIMIT)
+     (write-buffer post buffer)))
+
+   (setf POST (when post (parse-query post))))
+
+;This will replace the above line once mim-decode actually works.
+;(setf POST
+; (when post
+;  (if (env "CONTENT_TYPE")
+;   (mime-decode post)
+;   (parse-query post)))))
+  
   ;; CGI module present; try to guess which values in CGI:params are
   ;; from GET and which are from POST.
   (begin
@@ -668,10 +704,6 @@
               (url-decode (slice cookie (+ 1 n)))))
       (parse (env "HTTP_COOKIE") "; *" 0))))
 
-
-
-	
-	
 (context 'MAIN)
 
 ; This function wraps the distribution exit routine to ensure that sessions are

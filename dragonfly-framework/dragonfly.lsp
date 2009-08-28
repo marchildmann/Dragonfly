@@ -22,7 +22,7 @@
 
 ;; @module Dragonfly
 ;; @author Marc Hildmann <marc.hildmann at gmail.com>
-;; @version 0.19
+;; @version 0.20
 ;; 
 ;; @location http://code.google.com/p/dragonfly-newlisp/
 ;; @description A newLISP web framework for rapid web development
@@ -38,7 +38,7 @@
 (context 'Dragonfly)
 
 ; setting some constants for Dragonfly
-(constant 'dragonfly_version "Version 0.19")
+(constant 'dragonfly_version "Version 0.20")
 (constant 'host (env "HTTP_HOST"))
 (constant 'documentroot (env "DOCUMENT_ROOT"))
 (constant 'dragonfly-root (append (env "DOCUMENT_ROOT")"/dragonfly-framework"))
@@ -115,6 +115,15 @@
 				(println)
 
 				(Dragonfly:view defaultrss))
+
+			((ends-with query-list "rss")
+				(print http-xml-header)
+				;(print http-atom-header)
+				(print http-200)
+				(println)
+
+				(Dragonfly:view defaultrss))
+
 			
    			((empty? query-list)
 

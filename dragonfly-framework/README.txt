@@ -1,6 +1,6 @@
 ;;
 ;; Dragonfly - a newLISP web framework
-;; Version 0.18
+;; Version 0.20
 ;;
 ;; This project is under heavy development. It will include a simple finance software written
 ;; in newLISP and obviously Dragonfly.
@@ -14,6 +14,11 @@
 ;; Open Your browser and type localhost:8080 - have FUN!
 ;; 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+Version 0.20
+
+  * updated web.lsp to version 0.3.1 beta
+  
 
 Version 0.19
 
