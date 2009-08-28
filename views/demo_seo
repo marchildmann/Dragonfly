@@ -1,0 +1,24 @@
+<% (Dragonfly:partial "doctype") %>
+<% (Dragonfly:partial "header") %>
+
+<body>
+<% (Dragonfly:partial "navigation") %>
+<h1><% (Dragonfly:title "Dragonfly web framework") %></h1>
+<br/>
+
+<h2>Check description length Results</h2>
+<% (Dragonfly:check-meta-description) %><br/><br/>
+
+<h2>Check number of meta-keywords</h2>
+<% (Dragonfly:check-meta-keywords (list "dragonfly" "framework" "lisp" "marc hildmann")) %><br/><br/>
+
+
+<h2>Google Results</h2>
+<% (Dragonfly:table_open (list "Website" "Google Pagerank&trade;" "Estimated Result Count" "Keyword Anzahl" "Description")) %>
+<% (Dragonfly:table_footer "adEmma SEM/SEO Toolbox") %>
+<% (Dragonfly:table_data (list "www.newlisp.org" "4" (Dragonfly:google-results-domain "www.newlisp.org") (Dragonfly:check-meta-keywords (list "dragonfly" "framework" "lisp" "marc hildmann")) "") ) %>
+<% (Dragonfly:table_close) %>
+<br/><br/>
+
+
+<% (Dragonfly:partial "footer") %>

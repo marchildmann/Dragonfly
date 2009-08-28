@@ -1,0 +1,19 @@
+<!-- BEGIN sliding panel -->
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".slide-button").click(function() {
+		$("#panel").slideToggle("slow");
+		$(this).toggleClass("active");
+		return false;
+	}); 
+});
+</script>
+<div id="panel">
+	<% (Dragonfly:debugging) %>
+</div>
+<div class="slide">
+<a href="#" class="slide-button">
+	<div id='dragonfly_panel'>&mdash;()o Dragonfly <span class='dragonfly_panel_uppercase'>web framework</span></div>
+</a>
+</div>
+<!-- END sliding panel -->

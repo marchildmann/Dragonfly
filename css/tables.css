@@ -1,0 +1,40 @@
+/* nice table definitions */
+
+table {
+	font-family:Tahoma,Verdana,Arial,sans-serif;
+	padding:0;
+	empty-cells:show;
+	border-spacing:0px;
+	background-color:#ffffff;
+}
+
+table th {
+	font-size:12px;
+	border-bottom:2px solid #000000;		
+	border-left:1px solid #000000;
+	padding-top:4px;
+	padding-bottom:4px;		
+	padding-left:10px;
+}
+
+table td {
+	font-size:10px;
+	padding-top:4px;
+	padding-bottom:4px;		
+	padding-left:10px;
+	border-left:1px solid #000000;
+	border-bottom:1px solid #000000;		
+}
+
+.table_foot {
+	border:0;
+}
+	
+.table_firstcolumn {
+	border-left:0px;
+}
+
+.table_lastrow {
+	height:20px;
+	border-bottom:none;
+}

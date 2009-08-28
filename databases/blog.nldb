@@ -1,0 +1,12 @@
+(set 'nldb:tables '(entries))
+
+(set 'entries '(
+  ("ID" "Headline" "Text" "Author") 
+  ("1" "Headline" "Text" "Marc") 
+  ("2" "Headline" "Another Text" "Marc Hildmann") 
+  ("3" "Headline" "Text is cool" "Marc Hildmann") 
+  (nil nil nil nil) 
+  (nil nil nil nil) 
+  (nil nil nil nil) 
+  (nil nil nil nil)))
+

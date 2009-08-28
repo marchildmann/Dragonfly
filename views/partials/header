@@ -1,0 +1,12 @@
+<head>
+	<title><% (Dragonfly:title "Blog and lab of Marc Hildmann") %></title>
+	<% (Dragonfly:meta "author" "Marc Hildmann") %>
+	<% (Dragonfly:meta "keywords" "newlisp, framework, financier, personal finance application") %>
+	<% (Dragonfly:css "screen" "/css/dragonfly.css") %>
+	<% (Dragonfly:css "screen" "/css/tables.css") %>
+	<% (Dragonfly:css "screen" "/css/forms.css") %>
+	<% (Dragonfly:css "screen" "/css/twitter.css") %>
+	<% (Dragonfly:css "screen" "/css/screen.css") %>
+	<% (Dragonfly:css "print" "/css/print.css") %>
+	<% (Dragonfly:rss "Dragonfly web framework RSS Feed" "?/rssfeed/xml") %>
+</head>

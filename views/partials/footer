@@ -1,0 +1,6 @@
+<!-- BEGIN Google Analyics -->
+	<% (Dragonfly:google-analytics "UA-270258-9") %>
+<!-- END Google Analyics -->
+	<% (Dragonfly:benchmark-result) %>
+</body>
+</html>

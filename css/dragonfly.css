@@ -1,0 +1,34 @@
+/* dragonfly styles */
+
+#dragonfly_benchmark {
+	font-size:10px;
+	margin-top:20px;
+	color:#303030;
+}
+
+#dragonfly_logo {
+	font-size:12px;
+	color:#00AEEF;
+}
+
+#dragonfly_logo a {
+	color:#00AEEF;
+	text-decoration:none;
+}
+
+#dragonfly_panel {
+	font-size:12px;
+	color:#FFFFFF;
+}
+
+.dragonfly_panel_uppercase {
+	color:#FFFFFF;
+	font-size:10px;	
+	text-transform:uppercase;
+}
+
+.dragonfly_uppercase {
+	color:#303030;
+	font-size:10px;	
+	text-transform:uppercase;
+}

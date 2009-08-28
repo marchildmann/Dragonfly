@@ -1,0 +1,12 @@
+<div id="navigation">
+	<ul>
+		<li><% (Dragonfly:link_to "Home" "welcome" "index") %></li>
+		<li><% (Dragonfly:link_to "Dragonfly Debug" "debug" "index") %></li>
+		<li><% (Dragonfly:link_to "Settings" "settings" "index") %></li>
+		<li><% (Dragonfly:link_to "Demo: tables" "demo_tables" "index") %></li>
+		<li><% (Dragonfly:link_to "Demo: Twitter" "demo_twitter" "index") %></li>
+		<li><% (Dragonfly:link_to "Demo: SEO" "demo_seo" "index") %></li>
+		<li><% (Dragonfly:link_to "Demo: RSS" "rssfeed" "xml") %></li>
+	</ul>
+</div>
+<div class="clear"></div>

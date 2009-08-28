@@ -1,0 +1,25 @@
+<% (Dragonfly:partial "doctype") %>
+<% (Dragonfly:partial "header") %>
+
+<body>
+<% (Dragonfly:partial "navigation") %>
+<h1><% (Dragonfly:title "Dragonfly web framework") %></h1>
+<br/>		
+
+<% (println"<h3>POST</h3>"Web:POST) %>
+
+<h2>Image demo</h2>
+<% (Dragonfly:image "newLISP Logo" "/images/newlisp-logo.png", "class='image_logo'") %>
+<br/><br/>
+
+<h2>Link demo</h2>
+<p>Please send comments to <% (Dragonfly:link_mailto "Marc Hildmann" "marc.hildmann@gmail.com") %>.</p>
+<br/><br/>
+
+<h2>Search demo</h2>
+<% (Dragonfly:form-open "#" "POST") %>
+	<% (Dragonfly:form-textfield "Text") %>
+	<% (Dragonfly:form-submit-js "/search/for/" "Search") %>
+<% (Dragonfly:form-close) %>
+
+<% (Dragonfly:partial "footer") %>

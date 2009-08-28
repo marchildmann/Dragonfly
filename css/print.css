@@ -1,0 +1,80 @@
+body {
+	font-family:Arial,sans-serif;
+	font-size:12px;
+	margin:0px 0px 40px 10px;
+	padding:0px 0px 0px 0px;
+}
+
+.clear {
+	clear:both;
+}
+
+/* headline definitions */
+
+h1,h2,h3,h4,h5 {
+	font-family:Georgia,Times New Roman,Times,serif;
+	margin-bottom:12px;
+}
+
+h1 {
+	font-size:14px;
+	font-weight:bold;
+}
+
+h2 {
+	font-size:12px;
+}
+
+h3 {
+	font-size:10px;
+}
+
+h4 {
+	font-size:9px;
+}
+
+h5 {
+	font-size:7px;
+}
+
+
+/* nice table definitions */
+
+table {
+	font-family:Arial;
+	padding:0;
+	empty-cells:show;
+	border-spacing:0px;
+	background-color:#ffffff;
+}
+
+table th {
+	font-size:12px;
+	border-bottom:2px solid #000000;		
+	border-left:1px solid #000000;
+	padding-top:4px;
+	padding-bottom:4px;		
+	padding-left:10px;
+}
+
+table td {
+	font-size:10px;
+	padding-top:4px;
+	padding-bottom:4px;		
+	padding-left:10px;
+	border-left:1px solid #000000;
+	border-bottom:1px solid #000000;		
+}
+
+.table_foot {
+	border:0;
+}
+	
+.table_firstcolumn {
+	border-left:0px;
+}
+
+.table_lastrow {
+	height:20px;
+	border-bottom:none;
+}

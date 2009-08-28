@@ -1,0 +1,34 @@
+#panel {
+	background: #ffffff;
+	height: 1500px;
+	display: none;
+}
+.slide {
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+	width:820px;
+	height:22px;
+	background: #00aeef;
+}
+.slide-button {
+	text-align:center;
+	font-weight:bold;
+	margin:0px 0px 0px 0px;
+	padding:2px 0px 0px 0px;
+	width: 800px;
+	height: 22px;
+	display: block;
+	color: #ffffff;
+	text-decoration: none;
+}
+.active {
+	text-align:center;
+	font-weight:bold;
+	margin:0px 0px 0px 0px;
+	padding:2px 0px 0px 0px;
+	width: 800px;
+	height: 22px;
+	display: block;
+	color: #ffffff;
+	text-decoration: none;	
+}

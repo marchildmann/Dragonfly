@@ -1,0 +1,8 @@
+<% (Dragonfly:partial "doctype") %>
+<% (Dragonfly:partial "header") %>
+
+<body>
+<% (Dragonfly:partial "navigation") %>
+<h1><% (Dragonfly:title "Dragonfly web framework") %></h1>
+
+<% (Dragonfly:partial "footer") %>
